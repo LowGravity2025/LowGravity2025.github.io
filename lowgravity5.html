@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Low Gravity Space Apps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body { margin:0; font-family: 'Montserrat', Bahnschrift, Arial, sans-serif; background: linear-gradient(135deg,#1a202d 0%,#1e1f2a 100%); color:#222; overflow-x:hidden;}
+body::-webkit-scrollbar{display:none;}
+header{background: linear-gradient(90deg,#1e1f2a 60%,#5c6575 100%); padding:40px 0 20px 0; text-align:center; box-shadow:0 2px 12px #0002;}
+header h1{font-size:2.8em; margin:0; letter-spacing:2px; color:#fff;}
+header p{font-size:1.2em; color:#e3f2fd; margin-top:12px;}
+.sidebar{position:fixed; top:0; left:-260px; width:240px; height:100%; background:#e3f2fd; box-shadow:4px 0 12px #0003; padding:80px 20px 20px 20px; transition:left 0.3s ease; z-index:999; overflow-y:auto; scrollbar-width:none;}
+.sidebar::-webkit-scrollbar{display:none;}
+.menu-hover{position:fixed; top:0; left:0; width:40px; height:100%; z-index:998;}
+.menu-hover:hover + .sidebar, .sidebar:hover{left:0;}
+.sidebar h2{color:#1e1f2a; font-size:1.5em; margin:10px 0 20px 0;}
+.sidebar ul{list-style:none; padding:0; margin:0;}
+.sidebar li{margin-bottom:16px;}
+.sidebar li:last-child{margin-bottom:40px;}
+.sidebar a{text-decoration:none; color:#1565c0; font-weight:bold; transition:color 0.2s;}
+.sidebar a:hover{color:#3a3f4b;}
+nav{background:#3a3f4b; display:flex; align-items:center; justify-content:center; gap:40px; padding:18px 0; box-shadow:0 2px 8px #0001;}
+nav a{color:#fff; text-decoration:none; font-weight:700; font-size:1.1em; padding:8px 22px; border-radius:8px; transition:background 0.2s, color 0.2s;}
+nav a:hover{background:#5c6575; color:#fff;}
+main{max-width:1000px; margin:40px auto 0 auto; background: rgba(227,242,253,0.97); border-radius:22px; box-shadow:0 8px 32px #0002; padding:40px 50px;}
+section{margin-bottom:48px;}
+h2{color:#1e1f2a; font-size:2em; margin-bottom:18px; letter-spacing:1px;}
+ul, ol{font-size:1.1em; margin-left:24px;}
+.buscador-box{background:#e3f2fd; padding:28px; border-radius:16px; box-shadow:0 2px 12px #2193b044; margin-top:18px; text-align:center;}
+input[type="text"]{padding:12px; border-radius:8px; border:2px solid #8a9db2; width:60%; font-size:1.1em; margin-bottom:18px;}
+button{padding:12px 36px; border-radius:10px; background:#3a3f4b; color:#fff; font-weight:bold; border:none; cursor:pointer; font-size:1.1em; margin-top:10px; transition:background 0.2s,color 0.2s;}
+button:hover{background:#5c6575; color:#fff;}
+#resultadosBusqueda{margin-top:24px; font-size:1.15em; min-height:40px; color:#8a9db2;}
+.tema-box{background:#b2ebf2; border-radius:12px; padding:18px; margin-bottom:18px; box-shadow:0 2px 8px #2193b022;}
+.tema-titulo{font-size:1.2em; color:#1e1f2a; font-weight:bold;}
+.tema-descripcion{margin-top:8px; font-size:1em;}
+footer{background: linear-gradient(90deg,#3a3f4b 60%,#5c6575 100%); color:#e3f2fd; text-align:center; padding:24px 0 18px 0; margin-top:60px; border-radius:0 0 22px 22px; box-shadow:0 -2px 12px #2193b044;}
+@media(max-width:700px){main{padding:20px 10px;} nav{gap:10px; font-size:0.95em;} .sidebar{width:220px;}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Explore Scientific Topics</h1>
+<p>Research and learn about different science and technology topics on our website</p>
+</header>
+
+<div class="menu-hover"></div>
+<aside class="sidebar">
+<h2>Topics</h2>
+<ul id="listaTemas"></ul>
+</aside>
+
+<nav>
+<a href="#buscador">Search</a>
+<a href="#destacado">Featured topic</a>
+<a href="#contacto">Contact</a>
+</nav>
+
+<main id="mainContent"></main>
+
+<footer>
+<p>&copy; 2025 Cosmic Learn Space Apps</p>
+</footer>
+
+<script>
+// Lista completa de temas (tu misma que ya tenías)
+const temas = {
+  "VitaminD":{"titulo":"Vitamin D and Rheumatoid Arthritis: Biological Role","descripcion":"..."},
+  "Calpain":{"titulo":"Calpain-1 in Ischemic Neuronal Cell Death","descripcion":"..."},
+  "Hypothetical":{"titulo":"Hypothetical Summaries and Molecular Mechanisms","descripcion":"..."},
+  "GutMicrobiota":{"titulo":"Gut Microbiota and Human Health","descripcion":"..."},
+  "SpaceCells":{"titulo":"Biological Processes in Space: Cellular Adaptation to Microgravity","descripcion":"..."},
+  "PlantSpace":{"titulo":"Plant Biology in Space Environments","descripcion":"..."},
+  "MuscleBone":{"titulo":"Muscle and Bone Physiology in Microgravity","descripcion":"..."},
+  "Oxidative":{"titulo":"Oxidative Stress and Cellular Damage in Microgravity","descripcion":"..."},
+  "BrainSpace":{"titulo":"Brain Function and Neuroplasticity in Spaceflight","descripcion":"..."},
+  "Radiation":{"titulo":"Radiation Exposure and DNA Damage in Space","descripcion":"..."}
+};
+
+// Llenar sidebar
+const lista = document.getElementById('listaTemas');
+for(let k in temas){
+  const li = document.createElement('li');
+  li.innerHTML = `<a href="#${k}">${temas[k].titulo}</a>`;
+  lista.appendChild(li);
+}
+
+// Cargar contenido según hash
+function cargarContenido(){
+  const hash = location.hash.replace('#','');
+  const main = document.getElementById('mainContent');
+  if(temas[hash]){
+    main.innerHTML = `<section class="tema-box">
+      <div class="tema-titulo">${temas[hash].titulo}</div>
+      <div class="tema-descripcion">${temas[hash].descripcion}</div>
+    </section>`;
+  } else {
+    // Página principal con buscador
+    main.innerHTML = `
+      <section id="buscador">
+        <h2>Research a topic</h2>
+        <div class="buscador-box">
+          <input type="text" id="busqueda" placeholder="Write down the topic you want to research..." oninput="buscarEnTiempoReal()">
+          <button type="button" onclick="buscarTema()">Search</button>
+          <div id="resultadosBusqueda"></div>
+        </div>
+      </section>
+      <section id="destacado">
+        <h2>Featured topic</h2>
+        <div class="tema-box">
+          <span class="tema-titulo">Microbial adaptations in the International Space Station (ISS)</span><br>
+          <span class="tema-descripcion">
+            Various bacterial and fungal species isolated from the ISS show genetic adaptations to survive in extreme conditions of microgravity and radiation.
+          </span>
+        </div>
+      </section>
+      <section id="contacto">
+        <h2>Contact</h2>
+        <div class="tema-box">
+          Do you have questions or suggestions? <br>
+          Write to us at <a href="mailto:info@temascientificos.com" style="color:#2193b0;">info@temascientificos.com</a>
+        </div>
+      </section>`;
+  }
+}
+
+// Búsqueda en tiempo real
+function buscarEnTiempoReal(){
+  const busqueda = document.getElementById('busqueda').value.toLowerCase();
+  const resultadosDiv = document.getElementById('resultadosBusqueda');
+  resultadosDiv.innerHTML = "";
+  if(busqueda.length === 0) return;
+  const resultados = Object.values(temas).filter(t=>t.titulo.toLowerCase().includes(busqueda));
+  if(resultados.length === 0){
+    resultadosDiv.innerHTML = "<div class='tema-box'>No se encontraron resultados.</div>";
+    return;
+  }
+  resultados.forEach(t=>{
+    resultadosDiv.innerHTML += `<div class="tema-box">
+      <span class="tema-titulo">${t.titulo}</span>
+      <div class="tema-descripcion">${t.descripcion}</div>
+    </div>`;
+  });
+}
+
+// Resultados al presionar el botón
+function buscarTema(){
+  const busqueda = document.getElementById('busqueda').value.toLowerCase();
+  const resultados = Object.values(temas).filter(t=>t.titulo.toLowerCase().includes(busqueda));
+  let html = "";
+  if(resultados.length>0 && busqueda.length>0){
+    resultados.forEach(t=>{
+      html += `<div class="tema-box">
+        <span class="tema-titulo">${t.titulo}</span>
+        <div class="tema-descripcion">${t.descripcion}</div>
+      </div>`;
+    });
+  } else if(busqueda.length>0){
+    html = "<div class='tema-box'>No se encontraron resultados para tu búsqueda.</div>";
+  }
+  document.getElementById('resultadosBusqueda').innerHTML = html;
+}
+
+window.addEventListener('hashchange', cargarContenido);
+cargarContenido();
+</script>
+
+</body>
+</html>
+
